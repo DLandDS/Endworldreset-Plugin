@@ -1,0 +1,9 @@
+Config :
+  # d=day w=week m=month
+  every : 1w
+  time : 00:00
+
+Save :
+  #keep null if u want auto-generate
+  #if u want specify by yourself use format dd-MM-yyyy
+  nextReset : null
