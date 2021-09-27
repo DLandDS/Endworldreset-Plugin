@@ -10,8 +10,10 @@ Reset World The End automaticaly in periodically.
 ## Usage
 ```
 [Usages]:
-/endworldreset reload       Reload config plugin
-/endworldreset autogen      Auto generate config
+/endworldreset reload           Reload config plugin
+/endworldreset autogen          Auto generate config
+/endworldreset info             Show time left
+/endworldreset info setting     Show config info
 ```
 
 ## Default Config
@@ -31,7 +33,11 @@ Save :
 ## Permissions
 | Permission          | Description                  |
 |---------------------|-------------------------------|
-| endworldreset.admin | Give admin permission to control this plugin |
+| endworldreset.admin | Give permission to control plugin setting |
 
 
 ## PlaceholderAPI
+| key                 | Description                   |
+|---------------------|-------------------------------|
+| %ewr_info%          | Show time left to reset world |
+| %ewr_nextreset%     | Show reset world Date Time    |

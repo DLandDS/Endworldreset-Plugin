@@ -24,7 +24,7 @@ public final class Endworldreset extends JavaPlugin {
         log = this.getLogger();
 
         Config.setup();
-        log.log(Level.INFO, new PlaceholderView().register()?"PAPI Registered":"PAPI not Registered");
+        new PlaceholderView().register();
         getCommand("endworldreset").setExecutor(new Commands());
     }
 

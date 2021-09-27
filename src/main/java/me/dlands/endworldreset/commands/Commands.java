@@ -51,7 +51,9 @@ public class Commands implements CommandExecutor {
     void help(CommandSender sender){
         sender.sendMessage("Endworldreset Plugin\n" +
                 "[Usages]:\n" +
-                "/endworldreset reload       Reload config plugin\n" +
-                "/endworldreset autogen      Auto generate config");
+                "/endworldreset reload           Reload config plugin\n" +
+                "/endworldreset autogen          Auto generate config\n" +
+                "/endworldreset info             Show time left\n" +
+                "/endworldreset info setting     Show config info\n");
     }
 }
