@@ -1,8 +1,7 @@
 # Endworldreset-Plugin
 Reset World The End automaticaly in periodically.
 
-##Feature
-
+## Feature
 - Schedule the world end reset
 - Support PlaceholderAPI
 - Easy to use

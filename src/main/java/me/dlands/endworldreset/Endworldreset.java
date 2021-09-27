@@ -22,7 +22,6 @@ public final class Endworldreset extends JavaPlugin {
         plugin = this;
         //worldManager = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
         log = this.getLogger();
-
         Config.setup();
         new PlaceholderView().register();
         getCommand("endworldreset").setExecutor(new Commands());
