@@ -38,12 +38,18 @@ public class Settings {
             } catch (ParseException e) {
                 e.printStackTrace();
             };
-            futureReset = (Calendar) this.nextReset.clone();
-            futureReset.add(type.getCalendarType(), many);
         }
+
+        if(Calendar.getInstance().compareTo(this.nextReset) >= 0){
+            Endworldreset.log.log(Level.WARNING, "[Error] The nextReset date in config is older than now date, Autogen...");
+            set();
+        }
+
+        futureReset = (Calendar) this.nextReset.clone();
+        futureReset.add(type.getCalendarType(), many);
     }
 
-    void set(){
+    public void set(){
         this.nextReset = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Calendar calendar = Calendar.getInstance();
@@ -55,6 +61,8 @@ public class Settings {
         this.nextReset.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
         this.nextReset.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
         this.nextReset.add(type.getCalendarType(), many);
+        Config.save();
+        setup();
     }
 
     public EveryType getType() {
@@ -63,6 +71,11 @@ public class Settings {
     public Calendar getNextReset() {
         return nextReset;
     }
+
+    public Calendar getFutureReset() {
+        return futureReset;
+    }
+
     public int getMany() {
         return many;
     }
@@ -88,24 +101,21 @@ public class Settings {
         }
     }
 
-    public void print(){
-        if(nextReset != null){
+    public String print() {
+        StringBuilder info = new StringBuilder();
+        info.append("[Endworldreset] Settings :\n");
+        info.append("============Setting============\n");
+        info.append(" every : " + many + " " + type.toString() + "\n");
+        info.append(" time  : " + config.get("Config.time") + "\n");
+        info.append("==========Reset World==========\n");
+        if (nextReset != null) {
             SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            Endworldreset.log.log(Level.INFO, "=============Setting===========");
-            Endworldreset.log.log(Level.INFO, " every : " + many + " " + type.toString());
-            Endworldreset.log.log(Level.INFO, " time  : " + config.get("Config.time"));
-            Endworldreset.log.log(Level.INFO, "===========Reset World=========");
-            Endworldreset.log.log(Level.INFO, " next    : " + formater.format(nextReset.getTime()));
-            Endworldreset.log.log(Level.INFO, " future  : " + formater.format(futureReset.getTime()));
-            Endworldreset.log.log(Level.INFO, "===============================");
+            info.append(" next    : " + formater.format(nextReset.getTime()) + "\n");
+            info.append(" future  : " + formater.format(futureReset.getTime()) + "\n");
         } else {
-            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            Endworldreset.log.log(Level.INFO, "=============Setting===========");
-            Endworldreset.log.log(Level.INFO, " every : " + many + " " + type.toString());
-            Endworldreset.log.log(Level.INFO, " time  : " + config.get("Config.time"));
-            Endworldreset.log.log(Level.INFO, "===========Reset World=========");
-            Endworldreset.log.log(Level.INFO, " not set yet!");
-            Endworldreset.log.log(Level.INFO, "===============================");
+            info.append(" not set yet!");
         }
+        info.append("===============================");
+        return info.toString();
     }
 }

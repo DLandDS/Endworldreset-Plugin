@@ -4,6 +4,6 @@ Config :
   time : 00:00
 
 Save :
-  #keep null if u want auto-generate
-  #if u want specify by yourself use format dd-MM-yyyy
+  # u can keep it null while auto-generate
+  # u can specify by yourself use format dd-MM-yyyy
   nextReset : null

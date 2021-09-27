@@ -1,14 +1,13 @@
-package me.dlands.endworldreset.utils;
+package me.dlands.endworldreset.settings;
 
 import me.dlands.endworldreset.Endworldreset;
-import me.dlands.endworldreset.settings.Settings;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 
 public class Config {
     private static File file;
@@ -36,6 +35,8 @@ public class Config {
 
     public static void save(){
         try {
+            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+            config.set("Save.nextReset", formater.format(settings.getNextReset().getTime()));
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();

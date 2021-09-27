@@ -1,14 +1,18 @@
 package me.dlands.endworldreset;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import me.dlands.endworldreset.utils.Config;
+import me.dlands.endworldreset.commands.Commands;
+import me.dlands.endworldreset.papi.PlaceholderView;
+import me.dlands.endworldreset.settings.Config;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class Endworldreset extends JavaPlugin {
 
-    private static Plugin plugin;
+    private static  Plugin plugin;
     private static MultiverseCore worldManager;
     public static Logger log;
 
@@ -20,7 +24,8 @@ public final class Endworldreset extends JavaPlugin {
         log = this.getLogger();
 
         Config.setup();
-        Config.getSettings().print();
+        log.log(Level.INFO, new PlaceholderView().register()?"PAPI Registered":"PAPI not Registered");
+        getCommand("endworldreset").setExecutor(new Commands());
     }
 
     @Override
