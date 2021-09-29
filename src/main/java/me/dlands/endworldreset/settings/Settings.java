@@ -17,10 +17,6 @@ public class Settings {
 
     public Settings(FileConfiguration config){
         this.config = config;
-        setup();
-    }
-
-    void setup(){
         StringBuilder everyData = new StringBuilder((String) config.get("Config.every"));
         String nextReset = (String) config.get("Save.nextReset");
         switch (everyData.charAt(everyData.length()-1)){
@@ -29,40 +25,34 @@ public class Settings {
             case 'm' : type = EveryType.MONTH; break;
         }
         many = Integer.parseInt(everyData.deleteCharAt(everyData.length()-1).toString());
-
-        if(nextReset != null){
-            this.nextReset = Calendar.getInstance();
+        this.nextReset = Calendar.getInstance();
+        try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            try {
-                this.nextReset.setTime(sdf.parse((String) config.get("Save.nextReset") + " " + (String) config.get("Config.time")));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            };
+            this.nextReset.setTime(sdf.parse((String) config.get("Save.nextReset") + " " + (String) config.get("Config.time")));
+        } catch (ParseException e) {
+            this.nextReset = null;
         }
+    }
 
-        if(Calendar.getInstance().compareTo(this.nextReset) >= 0){
-            Endworldreset.log.log(Level.WARNING, "[Error] The nextReset date in config is older than now date, Autogen...");
-            set();
+    void setup(){
+        if(nextReset != null){
+            if(Calendar.getInstance().compareTo(this.nextReset) >= 0){
+                Endworldreset.log.log(Level.WARNING, "[Error] The nextReset date in config is older than now date, Autogen...");
+                set();
+            }
+            futureReset = (Calendar) this.nextReset.clone();
+            futureReset.add(type.getCalendarType(), many);
         }
-
-        futureReset = (Calendar) this.nextReset.clone();
-        futureReset.add(type.getCalendarType(), many);
     }
 
     public void set(){
         this.nextReset = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Calendar calendar = Calendar.getInstance();
-        try {
-            calendar.setTime(sdf.parse((String) config.get("Config.time")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.nextReset.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
-        this.nextReset.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
+        this.nextReset.set(Calendar.HOUR_OF_DAY, 0);
+        this.nextReset.set(Calendar.MINUTE, 0);
+        this.nextReset.set(Calendar.SECOND, 0);
         this.nextReset.add(type.getCalendarType(), many);
         Config.save();
-        setup();
     }
 
     public EveryType getType() {

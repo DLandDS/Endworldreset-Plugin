@@ -4,6 +4,8 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import me.dlands.endworldreset.commands.Commands;
 import me.dlands.endworldreset.papi.PlaceholderView;
 import me.dlands.endworldreset.settings.Config;
+import me.dlands.endworldreset.utils.ScheduleTimer;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,10 +22,13 @@ public final class Endworldreset extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
-        //worldManager = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+        worldManager = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
         log = this.getLogger();
         Config.setup();
-        new PlaceholderView().register();
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+            this.getLogger().log(Level.INFO, "PlaceholderAPI detected!");
+            new PlaceholderView().register();
+        }
         getCommand("endworldreset").setExecutor(new Commands());
     }
 

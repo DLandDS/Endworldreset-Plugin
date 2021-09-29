@@ -1,6 +1,7 @@
 package me.dlands.endworldreset.settings;
 
 import me.dlands.endworldreset.Endworldreset;
+import me.dlands.endworldreset.utils.ScheduleTimer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.*;
@@ -35,8 +36,10 @@ public class Config {
 
     public static void save(){
         try {
-            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
-            config.set("Save.nextReset", formater.format(settings.getNextReset().getTime()));
+            SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+            config.set("Save.nextReset", date.format(settings.getNextReset().getTime()));
+            config.set("Config.time", time.format(settings.getNextReset().getTime()));
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,6 +49,11 @@ public class Config {
     public static void reload(){
         config = YamlConfiguration.loadConfiguration(file);
         settings = new Settings(config);
+        if(settings.getNextReset() == null){
+            settings.set();
+        }
+        settings.setup();
+        ScheduleTimer.init();
     }
 
     public static Settings getSettings() {

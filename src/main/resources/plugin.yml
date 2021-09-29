@@ -4,8 +4,8 @@ main: me.dlands.endworldreset.Endworldreset
 api-version: 1.17
 authors: [ Dlands ]
 description: Reset world automaticaly in periodically
-depend: ['PlaceholderAPI']
-softdepend: ['Multiverse-Core']
+depend: ['Multiverse-Core']
+softdepend: ['PlaceholderAPI']
 commands:
   endworldreset:
     description: Reset World The End automaticaly in periodically. Help to see th manual
