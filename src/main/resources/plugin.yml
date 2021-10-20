@@ -1,7 +1,7 @@
 name: Endworldreset
 version: '${version}'
 main: me.dlands.endworldreset.Endworldreset
-api-version: 1.17
+api-version: 1.13
 authors: [ Dlands ]
 description: Reset world automaticaly in periodically
 depend: ['Multiverse-Core']

@@ -38,8 +38,24 @@ public class CountDown extends TimerTask {
                         //player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1);
                     }));
 
-                    Endworldreset.getWorldManager().getMVWorldManager().regenWorld("world_the_end", true, true, null, true);
-                    Bukkit.getOnlinePlayers().forEach((player -> {Utils.sendTitle(player, "New Season is begin", "Prepare yourself to new adventure!", 80);
+                    Config.getWorldList().getWorlds().forEach( world -> {
+                        Bukkit.getOnlinePlayers().forEach(player -> {
+                            if(player.getWorld().getName().equalsIgnoreCase(world)){
+                                if(Config.getWorldList().getLobby() != null){
+                                    player.teleport(Bukkit.getWorld(Config.getWorldList().getLobby()).getSpawnLocation());
+                                } else {
+                                    if(player.getBedSpawnLocation()!=null){
+                                        player.teleport(player.getBedSpawnLocation());
+                                    } else {
+                                        player.teleport(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+                                    }
+                                }
+                            }
+                        });
+                        Endworldreset.getWorldManager().getMVWorldManager().regenWorld(world, true, true, null, true);
+                    });
+                    Bukkit.getOnlinePlayers().forEach((player -> {
+                        Utils.sendTitle(player, "New Season is begin", "Prepare yourself to new adventure!", 80);
                         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
                     } ));
                 }

@@ -14,6 +14,7 @@ public class Config {
     private static File file;
     private static FileConfiguration config;
     private static Settings settings;
+    private static WorldList worldList;
 
     public static void setup(){
         file = new File(Endworldreset.getPlugin().getDataFolder(), "config.yml");
@@ -49,6 +50,7 @@ public class Config {
     public static void reload(){
         config = YamlConfiguration.loadConfiguration(file);
         settings = new Settings(config);
+        worldList = new WorldList(config);
         if(settings.getNextReset() == null){
             settings.set();
         }
@@ -58,5 +60,9 @@ public class Config {
 
     public static Settings getSettings() {
         return settings;
+    }
+
+    public static WorldList getWorldList() {
+        return worldList;
     }
 }

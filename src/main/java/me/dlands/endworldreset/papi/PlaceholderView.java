@@ -24,10 +24,12 @@ public class PlaceholderView extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        if(params.equals("info")){
-            return ScheduleTimer.getLongPeriod();
-        } else if (params.equals("nextreset")) {
+        if(params.equals("normal")){
+            return ScheduleTimer.getCDNormal();
+        } else if (params.equals("nextReset")) {
             return Config.get().get("Save.nextReset") + " " + Config.get().get("Config.time");
+        } else if (params.equals("short")) {
+            return ScheduleTimer.getCDShort();
         }
         return "[Endresetworld] Error";
     }

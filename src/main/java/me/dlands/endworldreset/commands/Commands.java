@@ -6,20 +6,38 @@ import me.dlands.endworldreset.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 
-public class Commands implements CommandExecutor {
+import java.util.Arrays;
+import java.util.List;
+
+public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         String adminPermission = "endworldreset.admin";
         if(args.length>0){
-            if(args[0].equals("info")) {
+            if(args[0].equalsIgnoreCase("info")) {
                 if(args.length == 1){
-                    sender.sendMessage(ScheduleTimer.getLongPeriod());
+                    sender.sendMessage(ScheduleTimer.getCDNormal());
                     return true;
                 } else {
-                    if(args[1].equals("setting")){
-                        Utils.runAsPermission(sender, adminPermission, ()-> sender.sendMessage(Config.getSettings().print()));
+                    if(args[1].equalsIgnoreCase("setting")){
+                        Utils.runAsPermission(sender, adminPermission, ()-> sender.sendMessage(Config.getSettings().getInfoPrint()));
+                        return true;
+                    } else if(args[1].equalsIgnoreCase("worldlist")){
+                        Utils.runAsPermission(sender, adminPermission, () -> {
+                           StringBuilder message = new StringBuilder();
+                           Config.getWorldList().getWorlds().forEach(s -> {
+                               message.append(", " + s);
+                           });
+                           message.delete(0, 2);
+                           sender.sendMessage("Worldlist : [" + message +"]");
+                           sender.sendMessage("Lobby : " + Config.getWorldList().getLobby());
+                        });
+                        return true;
+                    } else if(args[1].equalsIgnoreCase("clock")){
+                        sender.sendMessage(Utils.getClockInfo());
                         return true;
                     }
                 }
@@ -31,10 +49,10 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage("[Endworldreset] Configuration reloaded!");
                 });
                 return true;
-            } else if(args[0].equals("help")){
+            } else if(args[0].equalsIgnoreCase("help")){
                 help(sender);
                 return true;
-            } else if(args[0].equals("autogen")){
+            } else if(args[0].equalsIgnoreCase("autogen")){
                 Utils.runAsPermission(sender, adminPermission, ()->{
                     sender.sendMessage("[Endworldreset] Autogen complete!");
                     Config.getSettings().set();
@@ -54,6 +72,24 @@ public class Commands implements CommandExecutor {
                 "/endworldreset reload           Reload config plugin (Admin)\n" +
                 "/endworldreset autogen          Auto generate config (Admin)\n" +
                 "/endworldreset info             Show time left\n" +
-                "/endworldreset info setting     Show config info (Admin)\n");
+                "/endworldreset info setting     Show config info (Admin)\n" +
+                "/endworldreset info worldlist   Show world reset list (Admin)\n" +
+                "/endworldreset info clock       Show system clock");
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String[] complition= {};
+        if(args.length == 1){
+            complition = new String[]{"reload", "autogen", "info"};
+        }
+        if(args.length == 2){
+            switch (args[0]){
+                case "info":
+                    complition = new String[]{"setting", "worldlist", "clock"};
+                    break;
+            }
+        }
+        return Arrays.asList(complition);
     }
 }
