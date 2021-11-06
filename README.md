@@ -11,10 +11,10 @@ Reset World The End automaticaly in periodically.
 ## Usage
 ```
 [Usages]:
-/endworldreset reload           Reload config plugin (Admin)\n
-/endworldreset autogen          Auto generate config (Admin)\n
-/endworldreset info             Show time left\n
-/endworldreset info setting     Show config info (Admin)\n
+/endworldreset reload           Reload config plugin (Admin)
+/endworldreset autogen          Auto generate config (Admin)
+/endworldreset info             Show time left
+/endworldreset info setting     Show config info (Admin)
 /endworldreset info worldlist   Show world reset list (Admin)
 /endworldreset info clock       Show system clock
 /endworldreset papi reload      Reload placeholder expansion (Admin)
