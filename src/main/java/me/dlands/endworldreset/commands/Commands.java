@@ -1,8 +1,11 @@
 package me.dlands.endworldreset.commands;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.dlands.endworldreset.papi.PlaceholderView;
 import me.dlands.endworldreset.settings.Config;
 import me.dlands.endworldreset.utils.ScheduleTimer;
 import me.dlands.endworldreset.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,13 +52,26 @@ public class Commands implements CommandExecutor, TabCompleter {
                     sender.sendMessage("[Endworldreset] Configuration reloaded!");
                 });
                 return true;
-            } else if(args[0].equalsIgnoreCase("help")){
+            }
+            if(args[0].equalsIgnoreCase("help")){
                 help(sender);
                 return true;
-            } else if(args[0].equalsIgnoreCase("autogen")){
+            }
+            if(args[0].equalsIgnoreCase("autogen")){
                 Utils.runAsPermission(sender, adminPermission, ()->{
                     sender.sendMessage("[Endworldreset] Autogen complete!");
                     Config.getSettings().set();
+                });
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("papi") && args[1].equalsIgnoreCase("reload")){
+                Utils.runAsPermission(sender, adminPermission, ()->{
+                    new PlaceholderView().register();
+                    if(PlaceholderAPI.isRegistered("endworldreset")){
+                        sender.sendMessage("[Endworldreset] PAPI Registered!");
+                    } else {
+                        sender.sendMessage("[Endworldreset] PAPI Register is failed!");
+                    }
                 });
                 return true;
             }
@@ -74,7 +90,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                 "/endworldreset info             Show time left\n" +
                 "/endworldreset info setting     Show config info (Admin)\n" +
                 "/endworldreset info worldlist   Show world reset list (Admin)\n" +
-                "/endworldreset info clock       Show system clock");
+                "/endworldreset info clock       Show system clock" +
+                "/endworldreset papi reload      Reload placeholder expansion");
     }
 
     @Override
@@ -82,11 +99,17 @@ public class Commands implements CommandExecutor, TabCompleter {
         String[] complition= {};
         if(args.length == 1){
             complition = new String[]{"reload", "autogen", "info"};
+            if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+                complition = new String[]{"reload", "autogen", "info", "papi"};
+            }
         }
         if(args.length == 2){
             switch (args[0]){
                 case "info":
                     complition = new String[]{"setting", "worldlist", "clock"};
+                    break;
+                case "papi":
+                    complition = new String[]{"reload"};
                     break;
             }
         }

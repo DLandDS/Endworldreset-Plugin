@@ -1,7 +1,7 @@
 Config :
   # d=day w=week m=month
   every : 1w
-  time : "13:00"
+  time : "00:00"
 
 Save :
   # u can keep it null while auto-generate
